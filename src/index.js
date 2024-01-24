@@ -9,7 +9,8 @@ let time = 0;
 let timer;
 let lastHole = 0;
 let points = 0;
-let difficulty = "hard";
+let difficulty = "easy";
+let moleWhacked = false;
 
 const audioHit = new Audio("https://github.com/gabrielsanchez/erddiagram/blob/main/hit.mp3?raw=true");
 const song = new Audio("https://github.com/gabrielsanchez/erddiagram/blob/main/molesong.mp3?raw=true");
@@ -70,6 +71,7 @@ function setDelay(difficulty) {
       return 1000;
     } else {
       return randomInteger(600, 1200);
+
     }
   }
 
@@ -93,9 +95,10 @@ function chooseHole(holes) {
 	const hole = holes[index];
 	if (hole === lastHole) {
 		return chooseHole(holes);
-	}
-	lastHole = hole;
-	return hole;
+  }else{
+    lastHole = hole;
+  }
+  return hole;
 }
 
 /**
@@ -124,8 +127,9 @@ function gameOver() {
 		timeoutId = showUp();
 		return timeoutId;
 	} else {
-		gameStopped = stopGame();
-		return gameStopped;
+    stopGame();
+    stopAudio(song);
+		return "gameStopped";
 	}
 }
 
@@ -139,6 +143,8 @@ function gameOver() {
 *
 */
 function showUp() {
+  console.log("showUp function called");
+  moleWhacked = false;
   let delay = setDelay(difficulty); // TODO: Update so that it uses setDelay()
   const hole = chooseHole(holes);  // TODO: Update so that it use chooseHole()
   return showAndHide(hole, delay);
@@ -152,6 +158,8 @@ function showUp() {
 * the timeoutID
 *
 */
+  let timeoutId;
+
 function showAndHide(hole, delay){
   // TODO: call the toggleVisibility function so that it adds the 'show' class.
   toggleVisibility(hole);
@@ -160,7 +168,11 @@ function showAndHide(hole, delay){
     // TODO: call the toggleVisibility function so that it removes the 'show' class when the timer times out.
     toggleVisibility(hole);
 		gameOver();
+    moleWhacked = false;
+  }, 1000); 
 
+  setTimeout(() => {
+    moleWhacked = false;
 	}, delay); // TODO: change the setTimeout delay to the one provided as a parameter
 	return timeoutID;
 }
@@ -188,6 +200,7 @@ function toggleVisibility(hole){
 *
 */
 function updateScore() {
+  console.log("updateScore function called");
   // TODO: Write your code here
   points += 1;
   score.textContent = points;
@@ -232,8 +245,7 @@ function updateTimer() {
 function startTimer() {
   // TODO: Write your code here
   // timer = setInterval(updateTimer, 1000);
-  timer = setInterval(updateTimer, 1000);
-	return timer;
+  return setInterval(updateTimer, 1000); 
 }
 
 /**
@@ -247,7 +259,14 @@ function startTimer() {
 function whack(event) {
   // TODO: Write your code here.
   // call updateScore()
+  if (!moleWhacked) {
+    moleWhacked = true; 
   updateScore();
+  playAudio(audioHit);
+  setTimeout(() => {
+    moleWhacked = false;
+  }, 1000);
+}
   return points;
 }
 
@@ -258,7 +277,10 @@ function whack(event) {
 */
 function setEventListeners(){
   // TODO: Write your code here
-  moles.forEach((moles) => moles.addEventListener("click", whack));
+  moles.forEach(mole => mole.addEventListener('click', function(event) {
+    whack(event);
+    mole.removeEventListener('click', arguments.callee); // Remove the event listener after clicking
+  }));
   return moles;
 }
 
@@ -281,8 +303,12 @@ function setDuration(duration) {
 */
 function stopGame(){
   // stopAudio(song);  //optional
+  console.log("stopGame function called");
+  clearTimeout(timeoutID); 
   clearInterval(timer);
-  time = 15;
+  clearScore();
+  stopAudio(song); 
+  moleWhacked = false; // Reset the flag
   return "game stopped";
 }
 
@@ -293,11 +319,12 @@ function stopGame(){
 *
 */
 function startGame(){
-	setDuration(time);
-	showUp();
+  setDuration(15);
+  showUp();
+  points = 0;
   clearScore();
-	setEventListeners();
-	startTimer();
+  startTimer();
+  setEventListeners();
   return "game started";
 }
 
@@ -323,3 +350,5 @@ window.time = time;
 window.setDuration = setDuration;
 window.toggleVisibility = toggleVisibility;
 window.setEventListeners = setEventListeners;
+
+

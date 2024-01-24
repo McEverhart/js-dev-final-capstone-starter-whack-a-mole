@@ -21,8 +21,16 @@ h1 {
 h2 {
   text-align: center;
   font-size: 40px;
+  font-family: "Roboto", sans-serif;
   color: white;
   -webkit-text-stroke: 1px black;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
 
 #start {
@@ -47,7 +55,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
-  /*cursor: url('./assets/mallet.png'), pointer;*/
+  cursor: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mallet.png?raw=true'), pointer;
 }
 
 .hole {
@@ -58,7 +66,7 @@ h2 {
 
 .hole:after {
   display: block;
-  /*background: url("./assets/hole.png") bottom center no-repeat;*/
+  background: url("./assets/hole.png") bottom center no-repeat;
   background: url("https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/hole.png?raw=true") bottom center no-repeat;
   background-size:contain;
   content:'';
@@ -72,7 +80,7 @@ h2 {
 
 .mole {
   /*background:url('./assets/mole.png') bottom center no-repeat;*/
-  background:url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mole.png?raw=true') bottom center no-repeat;
+  background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mole.png?raw=true') bottom center no-repeat;
   background-size: 40%;
   position: absolute;
   top: 100%;
@@ -87,3 +95,4 @@ h2 {
   top: 0;
   /*transform: scale(1.1);*/
 }
+
