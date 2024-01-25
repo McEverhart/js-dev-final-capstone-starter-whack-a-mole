@@ -95,10 +95,9 @@ function chooseHole(holes) {
 	const hole = holes[index];
 	if (hole === lastHole) {
 		return chooseHole(holes);
-  }else{
-    lastHole = hole;
   }
-  return hole;
+    lastHole = hole;
+    return hole;
 }
 
 /**
@@ -127,9 +126,8 @@ function gameOver() {
 		timeoutId = showUp();
 		return timeoutId;
 	} else {
-    stopGame();
-    stopAudio(song);
-		return "gameStopped";
+    let gameStopped = stopGame();
+		return gameStopped;
 	}
 }
 
@@ -143,7 +141,6 @@ function gameOver() {
 *
 */
 function showUp() {
-  console.log("showUp function called");
   moleWhacked = false;
   let delay = setDelay(difficulty); // TODO: Update so that it uses setDelay()
   const hole = chooseHole(holes);  // TODO: Update so that it use chooseHole()
@@ -158,7 +155,7 @@ function showUp() {
 * the timeoutID
 *
 */
-  let timeoutId;
+ 
 
 function showAndHide(hole, delay){
   // TODO: call the toggleVisibility function so that it adds the 'show' class.
@@ -169,12 +166,12 @@ function showAndHide(hole, delay){
     toggleVisibility(hole);
 		gameOver();
     moleWhacked = false;
-  }, 1000); 
+  }, 1000);
 
   setTimeout(() => {
     moleWhacked = false;
 	}, delay); // TODO: change the setTimeout delay to the one provided as a parameter
-	return timeoutID;
+  return timeoutID;
 }
 
 /**
@@ -200,7 +197,6 @@ function toggleVisibility(hole){
 *
 */
 function updateScore() {
-  console.log("updateScore function called");
   // TODO: Write your code here
   points += 1;
   score.textContent = points;
@@ -244,8 +240,8 @@ function updateTimer() {
 */
 function startTimer() {
   // TODO: Write your code here
-  // timer = setInterval(updateTimer, 1000);
-  return setInterval(updateTimer, 1000); 
+   timer = setInterval(updateTimer, 1000);
+  return timer;
 }
 
 /**
@@ -256,19 +252,14 @@ function startTimer() {
 * the moles.
 *
 */
-function whack(event) {
+function whack(_event) {
   // TODO: Write your code here.
   // call updateScore()
-  if (!moleWhacked) {
-    moleWhacked = true; 
+  console.log("whack!")
   updateScore();
-  playAudio(audioHit);
-  setTimeout(() => {
-    moleWhacked = false;
-  }, 1000);
+  return points
 }
-  return points;
-}
+  
 
 /**
 *
@@ -277,10 +268,8 @@ function whack(event) {
 */
 function setEventListeners(){
   // TODO: Write your code here
-  moles.forEach(mole => mole.addEventListener('click', function(event) {
-    whack(event);
-    mole.removeEventListener('click', arguments.callee); // Remove the event listener after clicking
-  }));
+  moles.forEach(mole => mole.addEventListener('click', whack));
+    moles.removeEventListener('click', whack) // Remove the event listener after clicking
   return moles;
 }
 
@@ -319,7 +308,7 @@ function stopGame(){
 *
 */
 function startGame(){
-  setDuration(15);
+  setDuration(10);
   showUp();
   points = 0;
   clearScore();
