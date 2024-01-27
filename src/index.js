@@ -91,6 +91,7 @@ function setDelay(difficulty) {
  * const holes = document.querySelectorAll('.hole');
  * chooseHole(holes) //> returns one of the 9 holes that you defined
  */
+
 function chooseHole(holes) {
   // TODO: Write your code here.
   const index = randomInteger(0, 8);
@@ -262,15 +263,10 @@ function startTimer() {
 function whack(event) {
   // TODO: Write your code here.
   // call updateScore()
-  if (!moleWhacked){
-    moleWhacked = true;
+
   updateScore();
   playAudio(audioHit);
-  setTimeout (() => {
-    moleWhacked = fales;
-  }, 1000);
-}
-return points;
+  return points;
 }
   
 
@@ -321,15 +317,18 @@ function stopGame() {
 * is clicked.
 *
 */
-function startGame(){
-  setDuration(15);
-  showUp();
-  points = 0;
-  clearScore();
-  startTimer();
-  setEventListeners();
-  return "game started";
-}
+
+function startGame() {
+    setDuration(15);
+    showUp();
+    points = 0;
+    clearScore();
+    startTimer();
+    setEventListeners();
+    return "game started";
+  }
+ 
+
 
 startButton.addEventListener("click", startGame);
 
